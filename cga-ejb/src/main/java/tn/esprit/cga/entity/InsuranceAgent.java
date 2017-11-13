@@ -10,7 +10,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-
+@DiscriminatorValue("insuranceAgent")
 public class InsuranceAgent extends User implements Serializable {
 
 	

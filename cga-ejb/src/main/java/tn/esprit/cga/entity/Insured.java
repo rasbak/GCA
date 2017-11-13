@@ -12,6 +12,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@DiscriminatorValue("insured")
 
 public class Insured extends User implements Serializable {
 
@@ -22,20 +23,41 @@ public class Insured extends User implements Serializable {
 	private Date delivredIn;
 	private String cin1;
 	private String cin2;
-	@OneToOne(mappedBy="insured")
+	@OneToOne(mappedBy="insured",targetEntity=Address.class)
 	private Address address;
 	
-	@OneToMany(mappedBy="insured")
+	@OneToMany(mappedBy="insured",targetEntity=Report.class)
 	private List<Report> reports;
 	
-	@OneToMany(mappedBy="insured")
+	@OneToMany(mappedBy="insured",targetEntity=Vehicle.class)
 	private List<Vehicle> vehicles;
 	
-	@OneToMany(mappedBy=("insured"))
+	@OneToMany(mappedBy=("insured"),targetEntity=Claim.class)
 	private List<Claim> claims;
 	
-	@OneToMany(mappedBy="insured")
+	@OneToMany(mappedBy="insured",targetEntity=Contract.class)
     private List<Contract> contracts;
+
+	
+
+	public Insured() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Insured( String firstName, String lastName, String password,String email, String role,int driverLicenseNumber, Date delivredIn, String cin1, String cin2, Address address) {
+		super(lastName, firstName,password, email, role);
+		this.driverLicenseNumber = driverLicenseNumber;
+		this.delivredIn = delivredIn;
+		this.cin1 = cin1;
+		this.cin2 = cin2;
+		this.address = address;
+	}
+	
+	public Insured( String firstName, String lastName, String password,String email,String role,int driverLicenseNumber ,int id) {
+		super(lastName, firstName,password, email, role);
+		this.id=id;
+		this.driverLicenseNumber=driverLicenseNumber;
+	}
 
 
 	public List<Report> getReports() {
@@ -103,6 +125,10 @@ public class Insured extends User implements Serializable {
 	}
 
 	public Address getAddress() {
+		if(address==null){
+			address = new Address();
+		}
+		
 		return address;
 	}
 

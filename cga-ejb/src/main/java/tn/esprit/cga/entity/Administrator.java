@@ -10,7 +10,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-
+@DiscriminatorValue("administrator")
 public class Administrator extends User implements Serializable {
 
 	
@@ -18,8 +18,8 @@ public class Administrator extends User implements Serializable {
 
 	public Administrator(){}
 
-	public Administrator(String lastName, String firstName, String email, String role) {
-		super(lastName, firstName, email, role);
+	public Administrator(String lastName, String firstName, String password,String email, String role) {
+		super(lastName, firstName,password, email, role);
 		// TODO Auto-generated constructor stub
 	}
 

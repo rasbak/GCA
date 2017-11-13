@@ -10,7 +10,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-
+@DiscriminatorValue("expert")
 public class Expert extends User implements Serializable {
 
 	
@@ -21,9 +21,9 @@ public class Expert extends User implements Serializable {
 	
 	public Expert(){}
 
-	public Expert(String lastName, String firstName, String email, String role, String expertiseLevel,
+	public Expert(String lastName, String firstName, String password,String email, String role, String expertiseLevel,
 			String phoneNumber) {
-		super(lastName, firstName, email, role);
+		super(lastName, firstName, password,email, role);
 		this.expertiseLevel = expertiseLevel;
 		this.phoneNumber = phoneNumber;
 	}

@@ -28,7 +28,9 @@ public class Address implements Serializable {
 	@OneToOne
 	private Insured insured;
 
-	public Address(){}
+	public Address(){
+		
+	}
 	public Address(String address, String city, String government, Integer postalCode) {
 		super();
 		this.address = address;

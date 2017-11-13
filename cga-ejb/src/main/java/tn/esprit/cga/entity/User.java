@@ -8,7 +8,9 @@ import javax.persistence.*;
  *
  */
 @Entity
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table
+@DiscriminatorColumn
 public class User implements Serializable {
 
 	
@@ -16,22 +18,28 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	private String lastName;
-	private String firstName;
-	private String password;
-	private String email;
-	private String role;
+	protected int id;
+	protected String lastName;
+	protected String firstName;
+	protected String password;
+	protected String email;
+	protected String role;
 	
 	public User(){
 	}
-	public User(String lastName, String firstName, String email, String role) {
-		super();
+
+	
+
+	public User(String lastName, String firstName, String password, String email, String role) {
+		
 		this.lastName = lastName;
 		this.firstName = firstName;
+		this.password = password;
 		this.email = email;
 		this.role = role;
 	}
+
+
 
 	public int getId() {
 		return id;
