@@ -10,9 +10,11 @@ import javax.persistence.*;
  *
  */
 @Entity
-@DiscriminatorValue("insuranceAgent")
+
 public class InsuranceAgent extends User implements Serializable {
 
+
+	private String nom ;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -28,8 +30,7 @@ public class InsuranceAgent extends User implements Serializable {
 	private List<Policy> policies;
 	@OneToMany
 	private List<Claim> claims ;
-	@OneToOne
-	private Insurance insurance;
+	private Insurance insurance ;
 	public List<Endorsement> getEndorsements() {
 		return endorsements;
 	}
@@ -65,6 +66,12 @@ public class InsuranceAgent extends User implements Serializable {
 	}
 	public void setInsurance(Insurance insurance) {
 		this.insurance = insurance;
+	}
+   public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 	
 	
