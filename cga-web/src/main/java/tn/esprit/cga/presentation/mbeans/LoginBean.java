@@ -3,139 +3,87 @@ package tn.esprit.cga.presentation.mbeans;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
-import tn.esprit.cga.entity.Administrator;
-import tn.esprit.cga.entity.Expert;
-import tn.esprit.cga.entity.InsuranceAgent;
-import tn.esprit.cga.entity.Insured;
 import tn.esprit.cga.entity.User;
-import tn.esprit.cga.services.UserService;
-
+import tn.esprit.cga.services.AdministratorServiceLocal;
 
 @ManagedBean
 @SessionScoped
 public class LoginBean {
 
-
-	private String login;
+	private String email;
 	private String password;
 	private User user;
 	private boolean loggedIn;
-	private Insured insured;
-	private Administrator admin;
-	private Expert expert;
-	private InsuranceAgent agent;
 	
-	@EJB
-	UserService userService;
-	
-	public String doLogin(){
-		String navigateTo = "null";
-		user = userService.getUserByEmailAndPassword(login, password);
-		if (user.getRole().equals("insured")){
-			insured = userService.getInsuredById(user.getId());
-		
-		}
-		if(user.getRole().equals("administrator")){
-			admin = userService.getAdminById(user.getId());
-		}
-        if(user.getRole().equals("expert")){
-        	expert = userService.getExpert(user.getId());
-		}
-        if(user.getRole().equals("insuranceAgent")){
-        	agent = userService.getAgent(user.getId());
-            }
-		//&& emp.getRole()==Role.administrateur
-	if(user!=null ){
-		System.out.println("********************* C'est bon ");
-		navigateTo="indexLogin?faces-redirect=true";
-		loggedIn=true;	
-	}else{
-	
-		FacesContext.getCurrentInstance().addMessage("form:btn", new FacesMessage("bad confidential"));
+
+	public String getEmail() {
+
+		return email;
 	}
-	return navigateTo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
-	public String doLogout(){
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/login2?faces-redirect=true";
-		
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Insured user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
-
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
+	
+	@EJB
+	AdministratorServiceLocal administratorServiceLocal ;
 
-	public Insured getInsured() {
-		return insured;
+	
+	public String doLogin()
+	{
+		String navigateTo="null";
+		user = administratorServiceLocal.getUserByEmailAndPassword(email,password);
+		if(user != null )
+		{
+			if(user.getRole().equals("Expert")){
+			navigateTo = "/Home?faces-redirect=true";
+			}
+			else if (user.getRole().equals("Admin")) {
+				navigateTo = "/index?faces-redirect=true";	
+			}else if (user.getRole().equals("Insured")) {
+				navigateTo = "/Home?faces-redirect=true";
+			}
+			
+			loggedIn =true;
+		}
+		else
+		{
+			FacesContext.getCurrentInstance().addMessage("form:btn",new FacesMessage(" bad credentials"));
+		}
+		return navigateTo;
 	}
 
-	public void setInsured(Insured insured) {
-		this.insured = insured;
+	public String getPassword() {
+		return password;
 	}
-
-	public Administrator getAdmin() {
-		return admin;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public void setAdmin(Administrator admin) {
-		this.admin = admin;
-	}
-
-	public Expert getExpert() {
-		return expert;
-	}
-
-	public void setExpert(Expert expert) {
-		this.expert = expert;
-	}
-
-	public InsuranceAgent getAgent() {
-		return agent;
-	}
-
-	public void setAgent(InsuranceAgent agent) {
-		this.agent = agent;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public String doLogout()
+	{
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		return "pages-login?faces-redirect=true";
 	}
 	
 	
-	
-	
+
+
+
 }
